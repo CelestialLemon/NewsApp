@@ -81,13 +81,6 @@ const SideMenu = ({onTabChange}) => {
             </div>
 
             <DividingLine/>
-            
-            <div 
-            className={currentTab === 'general' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('general')}>
-                <img src={GeneralIcon} className='sidemenu-icon' style={{height : '30px ', width : '30px', marginTop : '-3px'}}/>
-                General
-            </div>
 
             <div 
             className={currentTab === 'business' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
