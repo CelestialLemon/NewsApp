@@ -133,7 +133,7 @@ const LoginForm = () => {
     {
         try
         {
-            const res = await axios.post('http://localhost:4000/auth/login',
+            const res = await axios.post('https://news-app-api-22.herokuapp.com/auth/login',
             {
                 'username' : username,
                 'password' : password,
