@@ -1,9 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import { useState, useEffect} from 'react';
+import { useHistory } from 'react-router';
 import styled from 'styled-components';
 import ArticlesGrid from '../components/News/ArticlesGrid';
 import SideMenu from '../components/Home/SideMenu';
+
+import ValidateLocalToken from '../functions/ValidateLocalToken'
+import ValidateSessionToken from '../functions/ValidateSessionToken'
 
 const red = '#D4145A';
 const orange = '#FBB03B';
@@ -34,8 +38,22 @@ const ContentContainer = styled.div`
 
 const Home = () => {
     
+    let history = useHistory();
+
     const [data, setData] = useState(null);
     const [currentTab, setCurrentTab] = useState('top-headlines');
+
+    const AuthenticateUser = async () =>
+    {
+        const res = await ValidateLocalToken();
+        const sessionRes = await ValidateSessionToken();
+
+        if(res === false && sessionRes === false)
+        {   
+            history.push('/login');
+    
+        }
+    }
 
     const FetchData = async() =>
     {
@@ -68,6 +86,11 @@ const Home = () => {
     {
         FetchData();
     }, [currentTab])
+
+    useEffect(() =>
+    {
+        AuthenticateUser();
+    }, []);
 
     
     return (
