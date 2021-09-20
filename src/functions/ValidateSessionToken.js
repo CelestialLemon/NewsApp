@@ -8,7 +8,7 @@ const ValidateSessionToken = async () =>
 
     try
     {
-        const res = await axios.post("http://localhost:4000/auth/login", {} , {'headers': {'authorization' : 'Bearer ' + sessionStorage.getItem("accessToken")}});
+        const res = await axios.post("https://news-app-api-22.herokuapp.com/auth/login", {} , {'headers': {'authorization' : 'Bearer ' + sessionStorage.getItem("accessToken")}});
         console.log("validating session token result " + res.data.msg);
         if(res.data.msg === "logged in with token")
         {

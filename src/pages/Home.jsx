@@ -43,11 +43,11 @@ const Home = () => {
         {
             let res;
             if(currentTab === 'top-headlines')
-            res = await axios.get('http://localhost:4000/news/top-headlines?country=in')
+            res = await axios.get('https://news-app-api-22.herokuapp.com/news/top-headlines?country=in')
             else if(currentTab === 'recommended' || currentTab === 'bookmarked')
             res = null;
             else
-            res = await axios.get(`http://localhost:4000/news/top-headlines?category=${currentTab}`)
+            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/top-headlines?category=${currentTab}`)
             setData(res.data.articles);
         }catch(err)
         {
