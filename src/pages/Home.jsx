@@ -43,11 +43,13 @@ const Home = () => {
         {
             let res;
             if(currentTab === 'top-headlines')
-            res = await axios.get('https://news-app-api-22.herokuapp.com/news/topheadlines?country=in')
+            res = await axios.get('https://news-app-api-22.herokuapp.com/news/topheadlines?country=in',
+            {headers : { 'Access-Control-Allow-Origin' : '*', 'Content-Type' : 'application/json'}})
             else if(currentTab === 'recommended' || currentTab === 'bookmarked')
             res = null;
             else
-            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/topheadlines?category=${currentTab}`)
+            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/topheadlines?category=${currentTab}`,
+            {headers : { 'Access-Control-Allow-Origin' : '*', 'Content-Type' : 'application/json'}})
             setData(res.data.articles);
         }catch(err)
         {
