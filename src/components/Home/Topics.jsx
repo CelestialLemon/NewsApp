@@ -50,7 +50,7 @@ const AddedTopics = styled.div`
 `
 
 
-const TopicInactiveContainer = styled.div`
+const TopicInactive = styled.div`
     width : fit-content;
     height : auto;
 
@@ -70,7 +70,7 @@ const TopicInactiveContainer = styled.div`
     cursor : pointer;
 `
 
-const TopicActiveContainer = styled.div`
+const TopicActive = styled.div`
     width : fit-content;
     height : auto;
 
@@ -91,7 +91,46 @@ const TopicActiveContainer = styled.div`
     cursor : pointer;
 `
 
+const TopicActiveContainer = styled.div`
+    width : fit-content;
+    height : auto;
 
+    margin : 10px;
+    padding : 5px 10px;
+
+    display : flex;
+    justify-content : center;
+    align-items : center;
+
+    border-radius : 5px;
+    background : black;
+    color : white;
+`
+
+const TopicInactiveContainer = styled.div`
+    width : fit-content;
+    height : auto;
+
+    margin : 10px;
+    padding : 5px 10px;
+
+    display : flex;
+    justify-content : center;
+    align-items : center;
+
+    border-radius : 5px;
+    border : 1px solid black;
+    background : white;
+    color : black;
+`
+
+const TopicText = styled.div`
+    font-size : 20px;
+    font-family : Bahnschrift;
+
+    cursor : pointer;
+
+`
 
 
 const Topics = ({onActiveTopicChange}) => {
@@ -102,8 +141,30 @@ const Topics = ({onActiveTopicChange}) => {
     const [topics, setTopics] = useState([]);
     const [topicsJSX, setTopicsJSX] = useState([]);
     
-    
-
+    const DeleteTopic = async (topic) =>
+    {
+        try
+        {
+            const res = await axios.delete(`http://localhost:4000/news/topics?topicToDelete=${topic}`,
+            {headers : { 
+                'Access-Control-Allow-Origin' : '*', 
+                'Content-Type' : 'application/json',
+                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}
+            });
+            
+            if(res.data.msg == 'deleted')
+            {
+                let temp = topics;
+                //temp topic is individual topic inside the array, i use temptopic variable name because topic is already used
+                temp = temp.filter((tempTopic) => tempTopic != topic);
+                setTopics(temp);
+                setUpdateState(updateState + 1);
+            }
+        }catch(err)
+        {
+            console.log(err);
+        }
+    }
     const AddNewTopic = async () =>
     {
         try
@@ -158,6 +219,7 @@ const Topics = ({onActiveTopicChange}) => {
         SetTopicsState();
     }
 
+
     const SetTopicsState = () =>
     {
         const temp = [];
@@ -167,15 +229,19 @@ const Topics = ({onActiveTopicChange}) => {
             temp.push(<TopicActiveContainer
                         className='topic-button' 
                         onClick={() => setActiveTopic(topic)}
-                        key={topic}>{topic}
-                        <IoIosClose size={25} onClick={() => console.log('click')}/>
+                        key={topic}><TopicText>{topic}</TopicText>
+                        <IoIosClose 
+                        className='delete-topic-icon' 
+                        onClick={() => DeleteTopic(topic)}/>
                         </TopicActiveContainer>)
             else
             temp.push(<TopicInactiveContainer 
                         className='topic-button' 
                         onClick={() => setActiveTopic(topic)}
-                        key={topic}>{topic}
-                        <IoIosClose size={25} onClick={() => console.log('click')}/>
+                        key={topic}><TopicText>{topic}</TopicText>
+                        <IoIosClose 
+                        className='delete-topic-icon' 
+                        onClick={() => DeleteTopic(topic)}/>
                         </TopicInactiveContainer>)
         });
         setTopicsJSX(temp);
@@ -201,7 +267,9 @@ const Topics = ({onActiveTopicChange}) => {
        <TopicsContainer>
            <AddNewTopicContainer>
                <IoMdAdd className='add-icon' onClick={AddNewTopic}/>
-               <AddNewTopicInput onChange={(e) => setNewTopic(e.target.value)}/>
+               <AddNewTopicInput 
+               onChange={(e) => setNewTopic(e.target.value)}
+               placeholder='Add a new topic to access it quickly'/>
            </AddNewTopicContainer>
 
         <AddedTopics>

@@ -72,6 +72,13 @@
     cursor: pointer;
 }
 
+.delete-topic-icon
+{
+    cursor : pointer;
+    transform: scale(1.5);
+    margin : 0px 0px 0px 5px;
+}
+
 .filter-search select
 {
     width : fit-content;

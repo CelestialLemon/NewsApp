@@ -33,8 +33,8 @@ const SearchInput = styled.input`
     height : 75%;
     width : 100%;
 
-    font-size : 16px;
-    font-family : Helvetica;
+    font-size : 20px;
+    font-family : Bahnschrift;
     outline : none;
     border : none;
     background-color : #c9c9c9;
@@ -60,7 +60,9 @@ const Searchbar = ({onSearchQueryChange, onSearch}) => {
         <UtilitybarContainer>
             <SearchbarContainer>
                 <AiOutlineSearch className='search-icon' onClick={onSearchClick}></AiOutlineSearch>
-                <SearchInput onChange={(e) => setSearchQuery(e.target.value)}></SearchInput>
+                <SearchInput 
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder='Search about a topic'></SearchInput>
             </SearchbarContainer>
         </UtilitybarContainer>
     )
