@@ -136,7 +136,7 @@ const NewsCard = ({articleData}) => {
     {
         try
         {
-            const res = await axios.post('http://localhost:4000/news/addbookmark',
+            const res = await axios.post('https://news-app-api-22.herokuapp.com/news/addbookmark',
             {
                 articleToBookmark : articleData
             },
@@ -162,7 +162,7 @@ const NewsCard = ({articleData}) => {
     {
         try
         {
-            const res = await axios.post('http://localhost:4000/news/checkifbookmarked',
+            const res = await axios.post('https://news-app-api-22.herokuapp.com/news/checkifbookmarked',
             {
                 articleToCheck : articleData
             },

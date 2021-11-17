@@ -78,10 +78,10 @@ const SideMenu = ({onTabChange, isSearchTabActive, closeSearchTab}) => {
             </div>
             
             <div 
-            className={currentTab === 'recommended' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => onClickNewTab('recommended')}>
+            className={currentTab === 'topics' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
+            onClick={() => onClickNewTab('topics')}>
                 <FaNewspaper className='sidemenu-icon' size={25}/>
-                Recommended
+                Topics
             </div>
             
             <div 

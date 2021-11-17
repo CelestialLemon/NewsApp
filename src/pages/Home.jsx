@@ -86,7 +86,7 @@ const Home = () => {
             let res;
             if(currentTab === 'top-headlines')
             {
-                res = await axios.get('http://localhost:4000/news/topheadlines?country=in',
+                res = await axios.get('https://news-app-api-22.herokuapp.com/news/topheadlines?country=in',
                 {headers : { 
                     'Access-Control-Allow-Origin' : '*', 
                     'Content-Type' : 'application/json',
@@ -95,7 +95,7 @@ const Home = () => {
             
             else if(currentTab === 'bookmarked')
             {
-                res = await axios.get('http://localhost:4000/news/bookmarked',
+                res = await axios.get('https://news-app-api-22.herokuapp.com/news/bookmarked',
                 {headers : { 
                     'Access-Control-Allow-Origin' : '*', 
                     'Content-Type' : 'application/json',
@@ -103,7 +103,7 @@ const Home = () => {
             }
             
             else
-            res = await axios.get(`http://localhost:4000/news/topheadlines?category=${currentTab}`,
+            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/topheadlines?category=${currentTab}`,
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
@@ -120,7 +120,7 @@ const Home = () => {
         try
         {
             const urlEncQuery = encodeURIComponent(searchQuery);
-            const res = await axios.get(`http://localhost:4000/news/search?urlEncQuery=${urlEncQuery}&search_type=${searchFilters.search_type}&language=${searchFilters.language}&sortBy=${searchFilters.sortBy}&from=${searchFilters.from}&to=${searchFilters.to}`,
+            const res = await axios.get(`https://news-app-api-22.herokuapp.com/news/search?urlEncQuery=${urlEncQuery}&search_type=${searchFilters.search_type}&language=${searchFilters.language}&sortBy=${searchFilters.sortBy}&from=${searchFilters.from}&to=${searchFilters.to}`,
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
@@ -146,7 +146,7 @@ const Home = () => {
             else
             {
                 const urlEncQuery = encodeURIComponent(activeTopic);
-            res = await axios.get(`http://localhost:4000/news/latest?urlEncQuery=${urlEncQuery}`,
+            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/latest?urlEncQuery=${urlEncQuery}`,
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
@@ -172,7 +172,7 @@ const Home = () => {
 
     const onActiveTopicChange = (newActiveTopic) =>
     {
-        if(currentTab == 'recommended')
+        if(currentTab == 'topics')
         {
             setActiveTopic(newActiveTopic);
             console.log(newActiveTopic);
@@ -203,7 +203,7 @@ const Home = () => {
 
     useEffect(() => 
     {
-        if(currentTab == 'recommended')
+        if(currentTab == 'topics')
         FetchArticles();
     }, [activeTopic])
 
@@ -219,7 +219,7 @@ const Home = () => {
             <MainMenu>
                 <Searchbar onSearchQueryChange={onSearchQueryChange} onSearch={FetchSearchData}/>
                 {isSearchTabActive ? <FilterSearchBar onSearchFiltersChange={onSearchFiltersChange}/> : <></>}
-                {currentTab == 'recommended' ? <Topics onActiveTopicChange={onActiveTopicChange}/> : <></>}
+                {currentTab == 'topics' ? <Topics onActiveTopicChange={onActiveTopicChange}/> : <></>}
                 <ContentContainer>
                     {data ? <ArticlesGrid articles={data} newsPerColumn={50} numOfColumns={3}></ArticlesGrid>
                     : <h3>Loading</h3>}

@@ -86,7 +86,7 @@ const SignupForm = () => {
     {
         try
         {
-            const res = await axios.post('http://localhost:4000/auth/signup',
+            const res = await axios.post('https://news-app-api-22.herokuapp.com/auth/signup',
             {
                 'username' : username,
                 'password' : password

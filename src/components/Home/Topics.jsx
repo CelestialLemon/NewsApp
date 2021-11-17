@@ -145,7 +145,7 @@ const Topics = ({onActiveTopicChange}) => {
     {
         try
         {
-            const res = await axios.delete(`http://localhost:4000/news/topics?topicToDelete=${topic}`,
+            const res = await axios.delete(`https://news-app-api-22.herokuapp.com/news/topics?topicToDelete=${topic}`,
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
@@ -169,7 +169,7 @@ const Topics = ({onActiveTopicChange}) => {
     {
         try
         {
-            const res = await axios.post('http://localhost:4000/news/topics',
+            const res = await axios.post('https://news-app-api-22.herokuapp.com/news/topics',
             {
                 'newTopic' : newTopic
             },
@@ -197,7 +197,7 @@ const Topics = ({onActiveTopicChange}) => {
     {
         try
         {
-            const res = await axios.get('http://localhost:4000/news/topics',
+            const res = await axios.get('https://news-app-api-22.herokuapp.com/news/topics',
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
