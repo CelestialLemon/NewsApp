@@ -37,7 +37,7 @@ const ArticlesGrid = ({articles, numOfColumns, newsPerColumn}) => {
             for(var j=0; j<numOfColumns; j++)
             {
                 columnsTemp[j].push(
-                    <NewsCard articleData={articles[index]}></NewsCard>
+                    <NewsCard articleData={articles[index]} key={'key' + i + j}></NewsCard>
                 )
                 index++;
                 if(index >= articles.length)
@@ -57,6 +57,7 @@ const ArticlesGrid = ({articles, numOfColumns, newsPerColumn}) => {
         setUpdateState(updateState + 1);
    }, [articles, numOfColumns, newsPerColumn])
 
+   if(articles.length > 0)
     return (
         <ArticlesContainer>
           {columns ? columns.map((column, article) => 
@@ -67,6 +68,7 @@ const ArticlesGrid = ({articles, numOfColumns, newsPerColumn}) => {
         </ArticlesContainer>
         
     )
+    else return (<h3>Empty</h3>)
 }
 
 export default ArticlesGrid

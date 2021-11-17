@@ -156,7 +156,7 @@ const ResetPassword = () => {
     {
         try
         {
-            const res = await axios.post('https://news-app-api-22.herokuapp.com/auth/resetpassword',
+            const res = await axios.post('http://localhost:4000/auth/resetpassword',
             {
                 'username' : username,
                 'newpassword' : newPassword

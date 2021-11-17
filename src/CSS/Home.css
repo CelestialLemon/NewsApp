@@ -42,3 +42,52 @@
 {
     margin : 0px 5px;
 }
+
+.search-icon
+{
+    margin : 0px 20px;
+    color : grey;
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.add-icon
+{
+    margin : 0px 20px;
+    color : grey;
+    transform: scale(1.5);
+    cursor : pointer;
+}
+
+.topic-button:active
+{
+    transform: scale(0.95);
+}
+
+.filter-icon
+{
+    margin : 0px 20px;
+    color : grey;
+    transform: scale(3);
+    cursor: pointer;
+}
+
+.filter-search select
+{
+    width : fit-content;
+    height : 50%;
+
+    margin : 0px 10px;
+
+    font-family : Bahnschrift;
+    font-size : 16px;
+}
+
+.date-picker
+{
+    margin : 0px 0px 0px 10px;
+    z-index: 5;
+}
+
+
+

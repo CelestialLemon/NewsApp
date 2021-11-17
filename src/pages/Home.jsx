@@ -8,6 +8,9 @@ import SideMenu from '../components/Home/SideMenu';
 
 import ValidateLocalToken from '../functions/ValidateLocalToken'
 import ValidateSessionToken from '../functions/ValidateSessionToken'
+import Searchbar from '../components/Home/Searchbar';
+import FilterSearchBar from '../components/Home/FilterSearchBar';
+import Topics from '../components/Home/Topics';
 
 const red = '#D4145A';
 const orange = '#FBB03B';
@@ -15,14 +18,25 @@ const orange = '#FBB03B';
 const PageContainer = styled.div`
     width : 100vw;
     min-height : 100vh;
-    height : fit-content;
+    height : 100vh;
     display : flex;
+    overflow : hidden;
     background : linear-gradient(to right, ${orange}, ${red});
 `
 
-const ContentContainer = styled.div`
+const MainMenu = styled.div`
     width : 100%;
-    height : 97vh;
+    max-width : 100%;
+    height : auto;
+
+    display : flex;
+    flex-direction : column;
+`
+
+const ContentContainer = styled.div`
+    width : auto;
+    height : fit-content;
+
 
     margin : 10px;
     
@@ -41,7 +55,17 @@ const Home = () => {
     let history = useHistory();
 
     const [data, setData] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeTopic, setActiveTopic] = useState('');
     const [currentTab, setCurrentTab] = useState('top-headlines');
+    const [isSearchTabActive, setIsSearchTabActive] = useState(false);
+    const [searchFilters, setSearchFilters] = useState({
+        'sortBy' : 'publishedAt',
+        'language' : '',
+        'search_type' : 'title-search',
+        'from' : new Date().setMonth(new Date().getMonth - 1),
+        'to' : new Date()
+    })
 
     const AuthenticateUser = async () =>
     {
@@ -61,31 +85,127 @@ const Home = () => {
         {
             let res;
             if(currentTab === 'top-headlines')
-            res = await axios.get('https://news-app-api-22.herokuapp.com/news/topheadlines?country=in',
-            {headers : { 'Access-Control-Allow-Origin' : '*', 'Content-Type' : 'application/json'}})
-            else if(currentTab === 'recommended' || currentTab === 'bookmarked')
-            res = null;
+            {
+                res = await axios.get('http://localhost:4000/news/topheadlines?country=in',
+                {headers : { 
+                    'Access-Control-Allow-Origin' : '*', 
+                    'Content-Type' : 'application/json',
+                    'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
+            }
+            
+            else if(currentTab === 'bookmarked')
+            {
+                res = await axios.get('http://localhost:4000/news/bookmarked',
+                {headers : { 
+                    'Access-Control-Allow-Origin' : '*', 
+                    'Content-Type' : 'application/json',
+                    'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
+            }
+            
             else
-            res = await axios.get(`https://news-app-api-22.herokuapp.com/news/topheadlines?category=${currentTab}`,
-            {headers : { 'Access-Control-Allow-Origin' : '*', 'Content-Type' : 'application/json'}})
+            res = await axios.get(`http://localhost:4000/news/topheadlines?category=${currentTab}`,
+            {headers : { 
+                'Access-Control-Allow-Origin' : '*', 
+                'Content-Type' : 'application/json',
+                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
             setData(res.data.articles);
         }catch(err)
         {
+            console.log(err)
+        }
+    }
 
+    const FetchSearchData = async () =>
+    {
+        try
+        {
+            const urlEncQuery = encodeURIComponent(searchQuery);
+            const res = await axios.get(`http://localhost:4000/news/search?urlEncQuery=${urlEncQuery}&search_type=${searchFilters.search_type}&language=${searchFilters.language}&sortBy=${searchFilters.sortBy}&from=${searchFilters.from}&to=${searchFilters.to}`,
+            {headers : { 
+                'Access-Control-Allow-Origin' : '*', 
+                'Content-Type' : 'application/json',
+                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}});
+            setCurrentTab('search');
+            setIsSearchTabActive(true);
+            setData(res.data.articles);
+        }catch(err)
+        {
+            console.log(err)
+        }
+    }
+
+    const FetchArticles = async () =>
+    {
+        try
+        {
+            let res;
+            if(activeTopic == undefined)
+            {
+                res = null;
+            }
+            else
+            {
+                const urlEncQuery = encodeURIComponent(activeTopic);
+            res = await axios.get(`http://localhost:4000/news/latest?urlEncQuery=${urlEncQuery}`,
+            {headers : { 
+                'Access-Control-Allow-Origin' : '*', 
+                'Content-Type' : 'application/json',
+                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}});
+            
+            setData(res.data.articles);
+            }
+            
+        }catch(err)
+        {
+            console.log(err);
         }
     }
 
     const onTabChange = (newtab) =>
     {
         setCurrentTab(newtab);
+        if(newtab != 'search')
+        setIsSearchTabActive(false);
         setData(null);
         console.log(newtab);
     }
 
+    const onActiveTopicChange = (newActiveTopic) =>
+    {
+        if(currentTab == 'recommended')
+        {
+            setActiveTopic(newActiveTopic);
+            console.log(newActiveTopic);
+        }
+    }
+
+
+    const onSearchFiltersChange = (newFilters) =>
+    {
+        setSearchFilters(newFilters);
+    }
+
+    const closeSearchTab = () =>
+    {
+        setIsSearchTabActive(false);
+    }
+
+    const onSearchQueryChange = (newQuery) =>
+    {
+        setSearchQuery(newQuery);
+    }
+
     useEffect(() =>
     {
+        if(currentTab != 'search')
         FetchData();
     }, [currentTab])
+
+    useEffect(() => 
+    {
+        if(currentTab == 'recommended')
+        FetchArticles();
+    }, [activeTopic])
 
     useEffect(() =>
     {
@@ -95,12 +215,17 @@ const Home = () => {
     
     return (
         <PageContainer>
-            <SideMenu onTabChange={onTabChange}></SideMenu>
-            <ContentContainer>
-                {data ? <ArticlesGrid articles={data} newsPerColumn={50} numOfColumns={3}></ArticlesGrid>
-                 : <h3>Loading</h3>}
-                 
-            </ContentContainer>
+            <SideMenu onTabChange={onTabChange} isSearchTabActive={isSearchTabActive} closeSearchTab={closeSearchTab}></SideMenu>
+            <MainMenu>
+                <Searchbar onSearchQueryChange={onSearchQueryChange} onSearch={FetchSearchData}/>
+                {isSearchTabActive ? <FilterSearchBar onSearchFiltersChange={onSearchFiltersChange}/> : <></>}
+                {currentTab == 'recommended' ? <Topics onActiveTopicChange={onActiveTopicChange}/> : <></>}
+                <ContentContainer>
+                    {data ? <ArticlesGrid articles={data} newsPerColumn={50} numOfColumns={3}></ArticlesGrid>
+                    : <h3>Loading</h3>}
+                    
+                </ContentContainer>
+            </MainMenu>
         </PageContainer>
     )
     //else return (<h3>Loading</h3>)

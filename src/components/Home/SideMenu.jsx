@@ -1,6 +1,5 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useHistory } from 'react-router'
 import styled from 'styled-components'
 
 import { BiTrendingUp } from 'react-icons/bi'
@@ -29,13 +28,16 @@ const orange = '#FBB03B';
 
 const SideMenuContainer = styled.div`
     min-width : 300px;
-    height : 100vh;
+    height : 97vh;
+
+    margin : 10px;
 
     display : flex;
     flex-direction : column;
     align-items : center;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     background : white;
+    border-radius : 5px;
 `
 
 const DividingLine = styled.div`
@@ -45,37 +47,46 @@ const DividingLine = styled.div`
     background : grey;
 `
 
-const SideMenu = ({onTabChange}) => {
-
-    let history = useHistory();
+const SideMenu = ({onTabChange, isSearchTabActive, closeSearchTab}) => {
 
     const [currentTab, setCurrentTab] = useState('top-headlines');
 
     useEffect(() =>
     {
+        if(currentTab != 'search')
         onTabChange(currentTab);
     }, [currentTab])
 
+    if(isSearchTabActive == true && currentTab != 'search')
+    {
+        setCurrentTab('search');
+    }
+    
+    const onClickNewTab = (newtab) =>
+    {
+        setCurrentTab(newtab);
+        closeSearchTab();
+    }
 
     return (
         <SideMenuContainer>
             <div 
             className={currentTab === 'top-headlines' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('top-headlines')}>
+            onClick={() => onClickNewTab('top-headlines')}>
                 <BiTrendingUp className='sidemenu-icon' size={25}/>
                 Top Headlines
             </div>
             
             <div 
             className={currentTab === 'recommended' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('recommended')}>
+            onClick={() => onClickNewTab('recommended')}>
                 <FaNewspaper className='sidemenu-icon' size={25}/>
                 Recommended
             </div>
             
             <div 
             className={currentTab === 'bookmarked' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'}
-            onClick={() => setCurrentTab('bookmarked')}>
+            onClick={() => onClickNewTab('bookmarked')}>
                 <BsBookmarks className='sidemenu-icon' size={25}/>
                 Bookmarked
             </div>
@@ -84,42 +95,42 @@ const SideMenu = ({onTabChange}) => {
 
             <div 
             className={currentTab === 'business' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('business')}>
+            onClick={() => onClickNewTab('business')}>
                 <img src={BusinessIcon} className='sidemenu-icon' style={{height : '25px '}}/>
                 Business
             </div>
             
             <div 
             className={currentTab === 'entertainment' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('entertainment')}>
+            onClick={() => onClickNewTab('entertainment')}>
                 <img src={EntertainmentIcon} className='sidemenu-icon' style={{height : '20px ', width : '20px', marginTop : '3px'}}/>
                 Entertainment
             </div>
             
             <div 
             className={currentTab === 'science' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('science')}>
+            onClick={() => onClickNewTab('science')}>
                 <img src={ScienceIcon} className='sidemenu-icon' style={{height : '28px ', width : '28px', marginTop : '-3px'}}/>
                 Science
             </div>
             
             <div 
             className={currentTab === 'sports' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('sports')}>
+            onClick={() => onClickNewTab('sports')}>
                 <img src={SportsIcon} className='sidemenu-icon' style={{height : '30px ', width : '30px'}}/>
                 Sports
             </div>
             
             <div 
             className={currentTab === 'health' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('health')}>
+            onClick={() => onClickNewTab('health')}>
                 <img src={HealthIcon} className='sidemenu-icon' style={{height : '25px ', width : '27px'}}/>
                 Health
             </div>
             
             <div 
             className={currentTab === 'technology' ? 'sidemenu-active-tab' : 'sidemenu-inactive-tab'} 
-            onClick={() => setCurrentTab('technology')}>
+            onClick={() => onClickNewTab('technology')}>
                 <img src={TechnologyIcon} className='sidemenu-icon' style={{height : '25px ', width : '25px'}}/>
                 Technology
             </div>
