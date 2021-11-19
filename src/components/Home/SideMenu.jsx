@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router'
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 
 import { BiTrendingUp } from 'react-icons/bi'
@@ -40,6 +42,22 @@ const SideMenuContainer = styled.div`
     border-radius : 5px;
 `
 
+const LogoutButton = styled(motion.div)`
+    width : 90%;
+    height : auto;
+    padding : 10px 0px;
+    margin : 10px 0px;
+
+    display : flex;
+    justify-content : center;
+    font-family : Bahnschrift;
+    font-size : 24px;
+    border : 1px solid ${red};
+    border-radius : 5px;
+    color : ${red};
+    cursor : pointer;
+`
+
 const DividingLine = styled.div`
     width : 100%;
     height : 1px;
@@ -49,6 +67,7 @@ const DividingLine = styled.div`
 
 const SideMenu = ({onTabChange, isSearchTabActive, closeSearchTab}) => {
 
+    let history = useHistory();
     const [currentTab, setCurrentTab] = useState('top-headlines');
 
     useEffect(() =>
@@ -66,6 +85,13 @@ const SideMenu = ({onTabChange, isSearchTabActive, closeSearchTab}) => {
     {
         setCurrentTab(newtab);
         closeSearchTab();
+    }
+
+    const onClickLogout = () =>
+    {
+        localStorage.removeItem('accessToken');
+        sessionStorage.removeItem('accessToken');
+        history.push('/login');
     }
 
     return (
@@ -136,6 +162,13 @@ const SideMenu = ({onTabChange, isSearchTabActive, closeSearchTab}) => {
             </div>
 
             <DividingLine/>
+
+            <LogoutButton
+            whileTap={{
+                scale : 0.95
+            }}
+            onClick={onClickLogout}
+            >Logout</LogoutButton>
             
         </SideMenuContainer>
     )
