@@ -149,7 +149,7 @@ const Topics = ({onActiveTopicChange}) => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}
+                'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}
             });
             
             if(res.data.msg == 'deleted')
@@ -176,7 +176,7 @@ const Topics = ({onActiveTopicChange}) => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}
+                'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}
             });
 
             console.log(res.data);
@@ -201,7 +201,7 @@ const Topics = ({onActiveTopicChange}) => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}
+                'authorization' : 'Bearer ' + ((localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken")) || sessionStorage.getItem("accessToken"))}
             });
 
             console.log(res.data);

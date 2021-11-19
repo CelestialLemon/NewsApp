@@ -90,7 +90,7 @@ const Home = () => {
                 {headers : { 
                     'Access-Control-Allow-Origin' : '*', 
                     'Content-Type' : 'application/json',
-                    'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
+                    'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}})
             }
             
             else if(currentTab === 'bookmarked')
@@ -99,7 +99,7 @@ const Home = () => {
                 {headers : { 
                     'Access-Control-Allow-Origin' : '*', 
                     'Content-Type' : 'application/json',
-                    'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
+                    'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}})
             }
             
             else
@@ -107,7 +107,7 @@ const Home = () => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}})
+                'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}})
             setData(res.data.articles);
         }catch(err)
         {
@@ -124,7 +124,7 @@ const Home = () => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}});
+                'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}});
             setCurrentTab('search');
             setIsSearchTabActive(true);
             setData(res.data.articles);
@@ -150,7 +150,7 @@ const Home = () => {
             {headers : { 
                 'Access-Control-Allow-Origin' : '*', 
                 'Content-Type' : 'application/json',
-                'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}});
+                'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}});
             
             setData(res.data.articles);
             }

@@ -2,13 +2,13 @@ import axios from 'axios'
 
 const ValidateLocalToken = async () =>
 {
-    if(localStorage.getItem("accessToken") == null)
+    if((localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken")) == null)
     return false;
 
 
     try
     {
-        const res = await axios.post("https://news-app-api-22.herokuapp.com/auth/login", '' , {'headers': {'authorization' : 'Bearer ' + localStorage.getItem("accessToken")}});
+        const res = await axios.post("https://news-app-api-22.herokuapp.com/auth/login", '' , {'headers': {'authorization' : 'Bearer ' + (localStorage.getItem("accessToken") || sessionStorage.getItem("accessToken"))}});
         if(res.data.msg === "logged in with token")
         {
             console.log("loggin in with local token");
